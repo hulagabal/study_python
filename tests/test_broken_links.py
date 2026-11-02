@@ -34,7 +34,6 @@ def test_dropdown():
         page.goto("https://testautomationpractice.blogspot.com/")
         
         scrolling_drowdown = page.locator(".widget-content #comboBox")
-        
         scrolling_drowdown.click()
         
         page.get_by_text("Item 15", exact=True).click()
@@ -66,12 +65,8 @@ def test_download_text_file():
         with page.expect_download() as download_info:
             page.get_by_role("link", name="Download Text File").click()
             
-        
-        
         download = download_info.value
-        
         filepath = "C:/Users/diya-mutturajh/Desktop/info.text"
-        
         download.save_as(filepath)    
         
         
