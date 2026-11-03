@@ -37,6 +37,3 @@ def test_new_tab():
         
         expect(new_page).to_have_url("https://www.pavantestingtools.com/")
             
-            
-            
-            
