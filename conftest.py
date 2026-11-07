@@ -6,6 +6,9 @@ import pytest
 from playwright.sync_api import Page
 
 from pages.login_page import LoginPage
+from pages.inventory_page import InventoryPage
+from pages.cart_page import CartPage
+from pages.checkout_Information_page import CheckoutInformationPage
 from utils.dialog_helper import handle_dialog
 
 
@@ -47,3 +50,19 @@ def pytest_runtest_makereport(item, call):
     report = outcome.get_result()
     setattr(item, f"rep_{report.when}", report )
     
+@pytest.fixture(scope="function")
+def checkout_info_page(page:Page) -> CheckoutInformationPage:
+    login_page = LoginPage(page)
+    login_page.login("standard_user", "secret_sauce")
+        
+    inventory_page = InventoryPage(page)
+    inventory_page.verify_product_details()
+    inventory_page.add_product_to_cart()
+    inventory_page.open_cart_page()
+        
+    cart_page = CartPage(page)
+    cart_page.verify_cart_details()
+    cart_page.click_checkout()
+        
+    checkout_information_page = CheckoutInformationPage(page)
+    return checkout_information_page

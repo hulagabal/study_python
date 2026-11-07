@@ -16,7 +16,7 @@ class InventoriesPage:
         expect(self.product_name).to_have_text(self.product_name_text)
         expect(self.product_price).to_have_text(self.product_price_text)
 
-    def add_product_to_cart(self):
+    def verify_add_product_to_cart(self):
         expect(self.product_add_cart_button).to_be_visible()
         self.product_add_cart_button.click()
         expect(self.shopping_cart_link).to_have_text("1")

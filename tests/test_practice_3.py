@@ -12,7 +12,7 @@ def test_specific_product(logged_in_user, product_name: str, product_price: str)
     
     inventories_page = InventoriesPage(logged_in_user, product_name, product_price)
     inventories_page.verify_product_details()
-    inventories_page.add_product_to_cart()
+    inventories_page.verify_add_product_to_cart()
     inventories_page.open_cart_page()
 
     product_cart_page = ProductCartPage(logged_in_user, product_name, product_price)
