@@ -1,3 +1,4 @@
+from decimal import Decimal
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
@@ -30,6 +31,9 @@ def test_checkout_overview(page:Page):
     checkout_overview_page.verify_quantity("Sauce Labs Fleece Jacket", "1")
     checkout_overview_page.verify_subtotal("$49.99")
     checkout_overview_page.verify_tax("$4.00")
-    
-    
-    
+    checkout_overview_page.verify_total(Decimal("53.99"))
+    checkout_overview_page.click_finish()
+    checkout_overview_page.verify_order_confirmation()
+    checkout_overview_page.click_back_home()
+    inventory_page.open_cart_page()
+    cart_page.verify_cart_is_empty()
