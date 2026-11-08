@@ -6,10 +6,8 @@ def test_new_tab():
         page = browser.new_page()
         page.goto("https://testautomationpractice.blogspot.com/p/playwrightpractice.html")
         
-        
         with page.expect_popup() as page_info:
             page.get_by_role("button", name="New Tab").click()
-        
         
         new_page = page_info.value
         

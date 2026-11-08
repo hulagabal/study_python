@@ -34,7 +34,6 @@ def test_practice_playwright():
         page.get_by_label(text="Express").check()
         
         #Get By text
-        
         print(page.get_by_text(text=" important text").inner_text())
         print(page.get_by_text(re.compile("colored text", re.IGNORECASE)).inner_text())
         print(page.get_by_text(re.compile("^This paragraph")).inner_text())

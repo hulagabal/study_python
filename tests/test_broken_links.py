@@ -67,10 +67,4 @@ def test_download_text_file():
             
         download = download_info.value
         filepath = "C:/Users/diya-mutturajh/Desktop/info.text"
-        download.save_as(filepath)    
-        
-        
-        
-        
-                
-
+        download.save_as(filepath)
