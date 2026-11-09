@@ -10,7 +10,6 @@ def test_iframe(page:Page):
     editor.fill(the_text)
     expect(editor).to_have_text(the_text)
 
-
 def test_netsted_frames(page:Page):
     page.goto("https://the-internet.herokuapp.com/frames")
     page.get_by_role("link", name="Nested Frames").click()
