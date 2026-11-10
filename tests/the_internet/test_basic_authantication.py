@@ -16,5 +16,3 @@ def test_basic_auth(username, password, locator, expected_text):
         page.goto("https://the-internet.herokuapp.com/basic_auth")
             
         expect(page.locator(locator)).to_have_text(expected_text)
-        
-        

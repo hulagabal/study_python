@@ -11,4 +11,3 @@ def test_file_upload(page: Page):
     page.locator("#file-submit").click()
     
     expect(page.locator("#uploaded-files")).to_have_text("Athagry.pdf")
-       

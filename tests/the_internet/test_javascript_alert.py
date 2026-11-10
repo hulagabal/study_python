@@ -44,6 +44,3 @@ def test_javascript_prompt(page:Page):
     js_prompt_button.click()
     
     expect(result_text).to_have_text("You entered: Muttu")
-        
-    
-    
