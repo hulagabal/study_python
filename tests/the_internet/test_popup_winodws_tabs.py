@@ -12,3 +12,15 @@ def test_tabs(page: Page):
     
     expect(popup).to_have_title("New Window")
     expect(popup.get_by_role("heading", name="New Window")).to_have_text("New Window")
+    
+def test_windows(page: Page):
+    page.goto("https://the-internet.herokuapp.com/windows")
+    
+    expect(page.get_by_role("heading", name="Opening a new window")).to_be_visible()
+    
+    new_page = page.context.new_page()
+    new_page.goto("https://example.com")
+    
+    expect(new_page).to_have_title("Example Domain")
+    
+    assert len(page.context.pages) == 2
