@@ -15,4 +15,4 @@ def test_identify_multiple_windows(page:Page):
     expect(new_window).to_have_title("New Window")
     
     expect(new_window).to_have_url("https://the-internet.herokuapp.com/windows/new")
-    expect(new_window.get_by_role("heading", name= "New Window"))
+    expect(new_window.get_by_role("heading", name= "New Window")).to_be_visible()

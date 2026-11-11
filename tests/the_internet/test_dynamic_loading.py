@@ -8,6 +8,7 @@ def test_dynamic_loading_example_one(page:Page):
     
     page.get_by_role("link", name= "Example 1: Element on page that is hidden").click()
     expect(finish_text).to_be_attached()
+    expect(finish_text).not_to_be_visible()
     
     page.get_by_role("button", name="Start").click()
     

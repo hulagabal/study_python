@@ -3,11 +3,15 @@ from playwright.sync_api import Page, expect
 def test_iframe(page:Page):
     page.goto("https://the-internet.herokuapp.com/frames")
     page.get_by_role("link", name="iFrame").click()
+    
     frame = page.frame_locator("#mce_0_ifr")
     editor = frame.locator("#tinymce") 
+    
     expect(editor).to_have_text("Your content goes here.")
+    
     the_text = "Learning Playwright with Python"
     editor.fill(the_text)
+    
     expect(editor).to_have_text(the_text)
 
 def test_netsted_frames(page:Page):
