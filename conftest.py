@@ -3,7 +3,7 @@ from datetime import datetime
 
 import pytest
 
-from playwright.sync_api import Page,Browser
+from playwright.sync_api import Page, Browser, expect
 
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
@@ -69,6 +69,17 @@ def checkout_info_page(page:Page) -> CheckoutInformationPage:
 
 @pytest.fixture(scope="function")
 def authenticated_page(browser: Browser):
+    #picks up json file saved by setup authentication fixture
+    auth_context = browser.new_context(storage_state="auth.json")
+    auth_page = auth_context.new_page()
+    
+    yield auth_page
+    
+    auth_context.close()
+    
+    
+@pytest.fixture(scope="session", autouse=True)
+def setup_authentication(browser: Browser):
     context = browser.new_context()
     page = context.new_page()
     page.goto("https://www.saucedemo.com/")
@@ -77,10 +88,10 @@ def authenticated_page(browser: Browser):
     page.get_by_placeholder("Password").fill("secret_sauce")
     page.get_by_role("button", name="Login").click()
     
+    expect(page.locator(".inventory_list")).to_be_visible()
+    #stores then auth.json
     context.storage_state(path="auth.json")
-    auth_context = browser.new_context(storage_state="auth.json")
-    auth_page = auth_context.new_page()
     
-    yield auth_page
+    yield
     
-    auth_context.close()
+    context.close()    

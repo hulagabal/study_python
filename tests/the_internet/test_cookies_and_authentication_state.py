@@ -1,6 +1,6 @@
 from playwright.sync_api import Browser, expect, Page
 
-def ttest_cookies_and_authentication_state(browser: Browser):
+def test_cookies_and_authentication_state(browser: Browser):
     try:
         
         context = browser.new_context()
@@ -34,4 +34,10 @@ def test_inventory(authenticated_page: Page):
     authenticated_page.goto("https://www.saucedemo.com/inventory.html")
     
     expect(authenticated_page.locator(".app_logo")).to_have_text("Swag Labs")
-    expect(authenticated_page.locator("#item_4_title_link")).to_have_text("Sauce Labs Backpack")        
+    expect(authenticated_page.locator("#item_4_title_link")).to_have_text("Sauce Labs Backpack")
+
+def test_cart(authenticated_page: Page):
+    authenticated_page.goto("https://www.saucedemo.com/inventory.html")
+    authenticated_page.get_by_role("button", name="Add to cart").first.click()
+    
+    expect(authenticated_page.locator(".shopping_cart_link")).to_have_text("1")
