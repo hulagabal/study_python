@@ -3,7 +3,7 @@ from datetime import datetime
 
 import pytest
 
-from playwright.sync_api import Page
+from playwright.sync_api import Page,Browser
 
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
@@ -66,3 +66,21 @@ def checkout_info_page(page:Page) -> CheckoutInformationPage:
         
     checkout_information_page = CheckoutInformationPage(page)
     return checkout_information_page
+
+@pytest.fixture(scope="function")
+def authenticated_page(browser: Browser):
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto("https://www.saucedemo.com/")
+    
+    page.get_by_placeholder("Username").fill("standard_user")
+    page.get_by_placeholder("Password").fill("secret_sauce")
+    page.get_by_role("button", name="Login").click()
+    
+    context.storage_state(path="auth.json")
+    auth_context = browser.new_context(storage_state="auth.json")
+    auth_page = auth_context.new_page()
+    
+    yield auth_page
+    
+    auth_context.close()

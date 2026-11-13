@@ -1,6 +1,6 @@
-from playwright.sync_api import Browser, expect
+from playwright.sync_api import Browser, expect, Page
 
-def test_cookies_and_authentication_state(browser: Browser):
+def ttest_cookies_and_authentication_state(browser: Browser):
     try:
         
         context = browser.new_context()
@@ -28,4 +28,10 @@ def test_cookies_and_authentication_state(browser: Browser):
     finally:
         context.close()
         new_context.close()
-            
+        
+        
+def test_inventory(authenticated_page: Page):
+    authenticated_page.goto("https://www.saucedemo.com/inventory.html")
+    
+    expect(authenticated_page.locator(".app_logo")).to_have_text("Swag Labs")
+    expect(authenticated_page.locator("#item_4_title_link")).to_have_text("Sauce Labs Backpack")        
