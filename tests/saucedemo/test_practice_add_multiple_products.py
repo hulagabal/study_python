@@ -27,4 +27,4 @@ def test_add_remove_multiple_products(page:Page):
     cart_page.verify_cart_count("1")
     
     cart_page.verify_cart_product("Sauce Labs Backpack")
-    cart_page.very_product_not_in_cart("Sauce Labs Bike Light")
+    cart_page.very_product_not_in_cart("Sauce Labs Bike Light")    

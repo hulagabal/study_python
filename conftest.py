@@ -14,8 +14,13 @@ from utils.dialog_helper import handle_dialog
 
 @pytest.fixture(scope="function")
 def logged_in_user(page, request):
+    username, password = getattr(
+        request,
+        "param",
+        ("standard_user", "secret_sauce")
+    )
     login_page = LoginPage(page)
-    login_page.login("standard_user", "secret_sauce")
+    login_page.login(username, password)
     yield page
     
     if request.node.rep_call.failed:
@@ -68,7 +73,7 @@ def checkout_info_page(page:Page) -> CheckoutInformationPage:
     return checkout_information_page
 
 @pytest.fixture(scope="function")
-def authenticated_page(browser: Browser):
+def authenticated_page(browser: Browser, setup_authentication):
     #picks up json file saved by setup authentication fixture
     auth_context = browser.new_context(storage_state="auth.json")
     auth_page = auth_context.new_page()
@@ -77,8 +82,7 @@ def authenticated_page(browser: Browser):
     
     auth_context.close()
     
-    
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session")
 def setup_authentication(browser: Browser):
     context = browser.new_context()
     page = context.new_page()

@@ -1,12 +1,16 @@
 import pytest
 
+from playwright.sync_api import expect
+
 from pages.inventories_page import InventoriesPage
 from pages.products_cart_page import ProductCartPage
+
+from test_data.login_users import LOGIN_USERS
 
 @pytest.mark.parametrize("product_name, product_price", 
                          [("Sauce Labs Fleece Jacket", "$49.99"),
                           ("Sauce Labs Bolt T-Shirt", "$15.99"),
-                          ("Sauce Labs Onesie1", "$7.99"),
+                          ("Sauce Labs Onesie", "$7.99"),
                           ("Test.allTheThings() T-Shirt (Red)", "$15.99")])
 def test_specific_product(logged_in_user, product_name: str, product_price: str):
     
@@ -19,3 +23,15 @@ def test_specific_product(logged_in_user, product_name: str, product_price: str)
     product_cart_page.verify_cart_details()
     product_cart_page.remove_item_from_cart()
     product_cart_page.verify_cart_is_empty()
+
+
+@pytest.mark.parametrize(
+    "logged_in_user", LOGIN_USERS,
+    indirect= True,
+    ids=[
+        "standard_user",
+        "problem_user"   
+    ]
+)    
+def test_invetory_page(logged_in_user):
+    expect(logged_in_user).to_have_url("https://www.saucedemo.com/inventory.html")    

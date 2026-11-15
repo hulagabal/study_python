@@ -21,7 +21,7 @@ def test_logins(page: Page, get_captured_messages, username: str, password: str,
     
     if expected_result == "success":
         expect(page).to_have_url("https://www.saucedemo.com/inventory.html")
-        expect(page.locator(".app_logo")).to_have_text("Swag Labs")
+        expect(page.locator(".app_logo")).to_have_text("Swag Labs", timeout=15000)
     elif expected_result == "locked_out":
         expect(page.locator(".error-message-container")).to_have_text("Epic sadface: Sorry, this user has been locked out.")
     

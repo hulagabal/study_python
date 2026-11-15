@@ -6,3 +6,4 @@ venv/
 .env
 downloads/
 auth.json
+screenshots/
