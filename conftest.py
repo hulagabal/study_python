@@ -3,7 +3,7 @@ from datetime import datetime
 
 import pytest
 
-from playwright.sync_api import Page, Browser, expect
+from playwright.sync_api import Playwright, Page, Browser, expect
 
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
@@ -94,4 +94,15 @@ def setup_authentication(browser: Browser):
     
     yield
     
-    context.close()    
+    context.close()
+ 
+@pytest.fixture(scope= "function")   
+def api_request(playwright: Playwright):
+    
+    request = playwright.request.new_context(
+        base_url="https://jsonplaceholder.typicode.com"
+    )
+    
+    yield request
+    
+    request.dispose()        
