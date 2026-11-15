@@ -9,7 +9,7 @@ from playwright.sync_api import Page, expect
         ],
     )
 def ttest_locate_filter_table_rows(page:Page, lastname, firstname, email, due):
-    page.goto("https://the-internet.herokuapp.com/tables")
+    page.goto("https://the-internet.herokuapp.com/tables", wait_until="domcontentloaded")
     
     table_1 = page.locator("#table1")
     #Uniquely Identifies the username as it has firstname and lastname, in production applications, a unique customer ID or email address is generally a stronger identifier
@@ -31,7 +31,7 @@ def ttest_locate_filter_table_rows(page:Page, lastname, firstname, email, due):
     ]   
 )    
 def test_filter_table_Data(page:Page, email, lastname, due):
-    page.goto("https://the-internet.herokuapp.com/tables")
+    page.goto("https://the-internet.herokuapp.com/tables", wait_until="domcontentloaded")
     
     table2 = page.locator("#table2")
     row = table2.locator("tbody tr").filter(has_text = email)

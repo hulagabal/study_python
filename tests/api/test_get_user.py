@@ -1,5 +1,6 @@
 import pytest
 
+@pytest.mark.api
 @pytest.mark.smoke
 def test_get_user(api_request):
         response = api_request.get("/users/1")

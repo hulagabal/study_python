@@ -15,7 +15,7 @@ def test_iframe(page:Page):
     expect(editor).to_have_text(the_text)
 
 def test_netsted_frames(page:Page):
-    page.goto("https://the-internet.herokuapp.com/frames")
+    page.goto("https://the-internet.herokuapp.com/frames", wait_until="domcontentloaded")
     page.get_by_role("link", name="Nested Frames").click()
     
     top_frame = page.frame_locator("frame[name='frame-top']")

@@ -23,16 +23,17 @@ def logged_in_user(page, request):
     login_page.login(username, password)
     yield page
     
-    if request.node.rep_call.failed:
+    report = getattr(request.node, "rep_call", None)
+    
+    if report and report.failed:
         screenshot_dir = Path("screenshots")
         screenshot_dir.mkdir(exist_ok=True) 
+        test_name = request.node.name
         time_stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        file_name = f"test_failure_{time_stamp}.png"
+        file_name = f"{test_name}_{time_stamp}.png"
         file_path = screenshot_dir / file_name
         
         page.screenshot(path=file_path)
-        
-        assert file_path.exists(), f'File {file_path} does not exist'
         
     print("Teardown: Test completed.")
 
@@ -77,28 +78,30 @@ def authenticated_page(browser: Browser, setup_authentication):
     #picks up json file saved by setup authentication fixture
     auth_context = browser.new_context(storage_state="auth.json")
     auth_page = auth_context.new_page()
-    
-    yield auth_page
-    
-    auth_context.close()
+    try:
+        yield auth_page
+    finally:
+        auth_context.close()
     
 @pytest.fixture(scope="session")
 def setup_authentication(browser: Browser):
     context = browser.new_context()
-    page = context.new_page()
-    page.goto("https://www.saucedemo.com/")
+    try:
+        page = context.new_page()
+        page.goto("https://www.saucedemo.com/")
+        
+        page.get_by_placeholder("Username").fill("standard_user")
+        page.get_by_placeholder("Password").fill("secret_sauce")
+        page.get_by_role("button", name="Login").click()
+        
+        expect(page.locator(".inventory_list")).to_be_visible()
+        #stores then auth.json
+        context.storage_state(path="auth.json")
     
-    page.get_by_placeholder("Username").fill("standard_user")
-    page.get_by_placeholder("Password").fill("secret_sauce")
-    page.get_by_role("button", name="Login").click()
     
-    expect(page.locator(".inventory_list")).to_be_visible()
-    #stores then auth.json
-    context.storage_state(path="auth.json")
-    
-    yield
-    
-    context.close()
+        yield
+    finally:
+        context.close()
  
 @pytest.fixture(scope= "function")   
 def api_request(playwright: Playwright):
@@ -106,7 +109,7 @@ def api_request(playwright: Playwright):
     request = playwright.request.new_context(
         base_url="https://jsonplaceholder.typicode.com"
     )
-    
-    yield request
-    
-    request.dispose()        
+    try:
+        yield request
+    finally:    
+        request.dispose()        
