@@ -3,7 +3,7 @@ from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 
 
-def ttest_dynamic_product_sorting(page:Page):
+def test_dynamic_product_sorting(page:Page):
     login_page =LoginPage(page)
     login_page.login("standard_user", "secret_sauce")
     
