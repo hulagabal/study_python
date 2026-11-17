@@ -14,9 +14,9 @@ class InventoryPage:
         self.product_names = page.locator(".inventory_item_name")
         self.product_prices = page.locator(".inventory_item_price")
     
-    def verify_product_details(self):
-        expect(self.product_name).to_have_text("Sauce Labs Fleece Jacket")
-        expect(self.product_price).to_have_text("$49.99")
+    def verify_product_details(self, product_name: str, product_price: str):
+        expect(self.product_name).to_have_text(product_name)
+        expect(self.product_price).to_have_text(product_price)
         
     def add_product_to_cart(self):    
         expect(self.product_add_cart_button).to_be_visible()

@@ -1,0 +1,22 @@
+[
+  {
+    "customerName": "Ananya Sharma",
+    "email": "ananya.sharma@example.com",
+    "phone": "+91-98765-43210",
+    "address": {
+      "street": "42 MG Road, Indiranagar",
+      "city": "Bengaluru",
+      "postalCode": "560038"
+    }
+  },
+  {
+    "customerName": "Rohan Verma",
+    "email": "rohan.verma@example.com",
+    "phone": "+91-91234-56789",
+    "address": {
+      "street": "15 Linking Road, Bandra West",
+      "city": "Mumbai",
+      "postalCode": "400050"
+    }
+  }
+]

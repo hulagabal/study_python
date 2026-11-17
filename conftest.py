@@ -62,7 +62,7 @@ def checkout_info_page(page:Page) -> CheckoutInformationPage:
     login_page.login("standard_user", "secret_sauce")
         
     inventory_page = InventoryPage(page)
-    inventory_page.verify_product_details()
+    inventory_page.verify_product_details("Sauce Labs Fleece Jacket", "$49.99")
     inventory_page.add_product_to_cart()
     inventory_page.open_cart_page()
         

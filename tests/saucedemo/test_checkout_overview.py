@@ -14,7 +14,7 @@ def test_checkout_overview(page:Page):
     login_page.login("standard_user", "secret_sauce")
             
     inventory_page = InventoryPage(page)
-    inventory_page.verify_product_details()
+    inventory_page.verify_product_details("Sauce Labs Fleece Jacket", "$49.99")
     inventory_page.add_product_to_cart()
     inventory_page.open_cart_page()
             
@@ -23,7 +23,7 @@ def test_checkout_overview(page:Page):
     cart_page.click_checkout()
             
     checkout_information_page = CheckoutInformationPage(page)
-    checkout_information_page.enter_valid_customer_info()
+    checkout_information_page.enter_valid_customer_info("Mutturaj", "Hulagabal", "586112")
     
     checkout_overview_page = CheckoutOverviewPage(page)
     checkout_overview_page.verify_overview_page_url()

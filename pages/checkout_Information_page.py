@@ -32,9 +32,9 @@ class CheckoutInformationPage:
         self.cancel_button.click()
         expect(self.page).to_have_url("https://www.saucedemo.com/cart.html")
     
-    def enter_valid_customer_info(self):
-        self.first_name.fill("Mutturaj")
-        self.last_name.fill("Hulagabal")
-        self.postal_code.fill("586112")
+    def enter_valid_customer_info(self, firstname: str, lastname: str, postcode: str):
+        self.first_name.fill(firstname)
+        self.last_name.fill(lastname)
+        self.postal_code.fill(postcode)
         self.continue_button.click()
         expect(self.page).to_have_url("https://www.saucedemo.com/checkout-step-two.html")

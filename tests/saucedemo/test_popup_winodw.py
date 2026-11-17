@@ -20,6 +20,6 @@ def test_multiple_pops(page: Page):
         
     print(len(popups))
         
-    for popup in enumerate(popups, start=1):        
+    for index, popup in enumerate(popups, start=1):        
         print(popup.title())
         popup.close()

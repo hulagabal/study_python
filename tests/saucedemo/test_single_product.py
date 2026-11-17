@@ -12,7 +12,7 @@ def test_specific_product(page: Page):
     expect(page).to_have_url("https://www.saucedemo.com/inventory.html")
     
     inventory_page = InventoryPage(page)        
-    inventory_page.verify_product_details()
+    inventory_page.verify_product_details("Sauce Labs Fleece Jacket", "$49.99")
     inventory_page.add_product_to_cart()
     inventory_page.open_cart_page()
 
