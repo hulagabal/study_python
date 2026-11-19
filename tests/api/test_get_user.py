@@ -1,9 +1,10 @@
 import pytest
+from api.user_client import UserClient
 
 @pytest.mark.api
 @pytest.mark.smoke
-def test_get_user(api_request):
-        response = api_request.get("/users/1")
+def test_get_user(user_client):
+        response = user_client.get_user(1)
         
         assert response.status == 200
         assert "application/json" in response.headers["content-type"]
@@ -18,13 +19,25 @@ def test_get_user(api_request):
         assert "email" in data
 
 @pytest.mark.negative
-def test_get_nonexistent_user(api_request):
-    response = api_request.get("/users/999")
-    
-    assert response.status == 404
-    
-    data = response.json()
-    assert data == {}
+def test_get_nonexistent_user(user_client):
+        response = user_client.get_user(999)
+        
+        assert response.status == 404
+        
+        data = response.json()
+        assert data == {}
         
         
-        
+def test_all_users(user_client):
+        response = user_client.get_all_users() 
+
+        assert response.status == 200
+
+        data = response.json()
+        assert isinstance(data, list)
+        assert len(data) == 10
+
+        for user in data:
+                assert isinstance(user, dict)
+                assert "id" in user
+                assert isinstance(user["id"], int)

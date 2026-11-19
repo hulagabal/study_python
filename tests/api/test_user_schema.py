@@ -27,10 +27,3 @@ def test_user_schema(api_request):
     assert isinstance(street, str)
     assert isinstance(city, str)
     assert isinstance(company_name, str)
-    
-    
-    
-    
-    
-    
-    

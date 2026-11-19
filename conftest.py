@@ -10,6 +10,7 @@ from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
 from pages.checkout_Information_page import CheckoutInformationPage
 from utils.dialog_helper import handle_dialog
+from api.user_client import UserClient
 
 
 @pytest.fixture(scope="function")
@@ -112,4 +113,9 @@ def api_request(playwright: Playwright):
     try:
         yield request
     finally:    
-        request.dispose()        
+        request.dispose()
+
+@pytest.fixture
+def user_client(api_request):
+    return UserClient(api_request)
+                    

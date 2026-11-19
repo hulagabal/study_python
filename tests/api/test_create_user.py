@@ -1,18 +1,16 @@
+def test_create_user(user_client):
 
-def test_create_user(api_request):
-
-    user_data = {
-    "name": "Mutturaj",
-    "username": "mutturaj",
-    "email": "muttu@example.com"
+    payload = {
+    "name": "Ananya",
+    "email": "ananya@example.com"
 }
+
+    response = user_client.create_user(payload)
     
-    response = api_request.post("/users", data=user_data)
     assert response.status == 201
     
     data = response.json()
-     
-    assert data["name"] == user_data["name"]
-    assert data["username"] == user_data["username"]
+    
+    assert data["name"] == payload["name"]
+    assert data["email"] == payload["email"]
     assert isinstance(data["id"], int)
-    assert data["email"] == user_data["email"]
