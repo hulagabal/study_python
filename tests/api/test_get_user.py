@@ -1,43 +1,42 @@
 import pytest
-from api.user_client import UserClient
+from utils.api_helper import validate_response, validate_status_code
 
 @pytest.mark.api
 @pytest.mark.smoke
 def test_get_user(user_client):
-        response = user_client.get_user(1)
-        
-        assert response.status == 200
-        assert "application/json" in response.headers["content-type"]
-        
-        data = response.json()
-        
-        assert isinstance(data["id"], int)
-        assert isinstance(data["name"], str)
-        
-        assert data["id"] == 1
-        assert data["name"] == "Leanne Graham"
-        assert "email" in data
+    response = user_client.get_user(1)
+    
+    validate_response(response, 200)
+    
+    data = response.json()
+    
+    assert isinstance(data["id"], int)
+    assert isinstance(data["name"], str)
+    
+    assert data["id"] == 1
+    assert data["name"] == "Leanne Graham"
+    assert "email" in data
 
 @pytest.mark.negative
 def test_get_nonexistent_user(user_client):
-        response = user_client.get_user(999)
-        
-        assert response.status == 404
-        
-        data = response.json()
-        assert data == {}
+    response = user_client.get_user(999)
+    
+    validate_status_code(response, 404)
+    
+    data = response.json()
+    assert data == {}
         
         
 def test_all_users(user_client):
-        response = user_client.get_all_users() 
+    response = user_client.get_all_users() 
 
-        assert response.status == 200
+    validate_response(response, 200)
 
-        data = response.json()
-        assert isinstance(data, list)
-        assert len(data) == 10
+    data = response.json()
+    assert isinstance(data, list)
+    assert len(data) == 10
 
-        for user in data:
-                assert isinstance(user, dict)
-                assert "id" in user
-                assert isinstance(user["id"], int)
+    for user in data:
+        assert isinstance(user, dict)
+        assert "id" in user
+        assert isinstance(user["id"], int)
