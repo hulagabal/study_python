@@ -1,13 +1,31 @@
 from playwright.sync_api import APIRequestContext
 
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
+
 class UserClient:
 
     def __init__(self, api_request: APIRequestContext):
         self.api_request = api_request
 
     def get_user(self, user_id: int):
+        endpoint = f"/users/{user_id}"
+        
+        logger.info("Sending GET request | %s", endpoint)
+        
+        try:
         # Your task: send a GET request for this user
-        response = self.api_request.get(f"users/{user_id}")
+            response = self.api_request.get(f"users/{user_id}")
+        except Exception:
+            logger.exception("API request failed | %s", endpoint)
+            raise    
+        
+        logger.info( 
+            "Received response | %s | Status: %s",
+            endpoint,
+            response.status
+    )
         return response
     
     def get_all_users(self):

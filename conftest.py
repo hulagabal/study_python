@@ -13,6 +13,14 @@ from utils.dialog_helper import handle_dialog
 from api.user_client import UserClient
 
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+base_url = os.getenv("API_BASE_URL" or "https://jsonplaceholder.typicode.com")
+
+
 @pytest.fixture(scope="function")
 def logged_in_user(page, request):
     username, password = getattr(
@@ -107,8 +115,10 @@ def setup_authentication(browser: Browser):
 @pytest.fixture(scope= "function")   
 def api_request(playwright: Playwright):
     
+    assert base_url, "API_BASE_URL is not configured"
+    
     request = playwright.request.new_context(
-        base_url="https://jsonplaceholder.typicode.com"
+        base_url=base_url
     )
     try:
         yield request
