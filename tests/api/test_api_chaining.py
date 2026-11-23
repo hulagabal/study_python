@@ -50,7 +50,41 @@ def test_post_api_chaining(api_request):
     
     print(response_get.status)
     print(response_get.text())
+    validate_status_code(response_get, 404)
+    assert response_get.url.endswith(f"/posts/{post_id}")
     assert response_get.json() == {}
+
+
+def ttest_get_patch_get_chaining(user_client):
+    
+    response = user_client.get_user(1)
+    
+    validate_status_code(response, 200)
+    
+    data = response.json()
+    
+    original_name = data["name"]
+    print(original_name)
+    user_id = data["id"]
+    
+    payload= {"name": "Mutturaj"}
+    response_update = user_client.update_user(user_id, payload=payload)
+    
+    validate_status_code(response_update, 200)
+    
+    update_data = response_update.json()
+    
+    updated_id = update_data["id"]
+    
+    assert update_data["name"] == "Mutturaj"
+    
+    response_get = user_client.get_user(updated_id)
+    
+    validate_status_code(response_get, 200)
+    
+    get_data = response_get.json()
+    assert get_data["name"] == original_name
+    
     
    
     
