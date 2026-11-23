@@ -2,6 +2,7 @@ import pytest
 
 from utils.api_helper import validate_response, validate_status_code, validate_required_fields, validate_non_empty_fields, validate_field_types, validate_response_data, validate_positive_integer, validate_numeric_range, validate_string_length, validate_product_data, validate_nested_fields
 from utils.logger import get_logger
+from test_data.user_contract import OPTIONAL_USER_CONTRACT
 
 logger = get_logger(__name__)
 
@@ -200,7 +201,7 @@ def test_get_user_complete_validation(user_client):
     
     data = response.json()
     
-    validate_response_data(data, ["id", "name", "username", "email"], expected_types,  positive_integer_fields=["id"])
+    validate_response_data(data, ["id", "name", "username", "email"], expected_types,  positive_integer_fields=["id"], optional_fields=OPTIONAL_USER_CONTRACT)
     
 
 def test_get_all_users_complete_validation(user_client):

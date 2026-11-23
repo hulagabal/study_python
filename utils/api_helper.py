@@ -64,7 +64,7 @@ def validate_field_types(data, expected_types):
                 )
 
 
-def validate_response_data(data, fields, types, positive_integer_fields=None, nested_fields=None):
+def validate_response_data(data, fields, types, positive_integer_fields=None, nested_fields=None, optional_fields=None):
     validate_required_fields(data, fields)
     validate_non_empty_fields(data, fields)
     validate_field_types(data, types)
@@ -73,7 +73,9 @@ def validate_response_data(data, fields, types, positive_integer_fields=None, ne
             validate_positive_integer(data[field], field)
     
     if nested_fields is not None:
-        validate_nested_fields(data, nested_fields)        
+        validate_nested_fields(data, nested_fields)
+    if optional_fields is not None:
+        validate_optional_field_types(data, optional_fields)            
 
 user = {
     "id": -5,
@@ -134,5 +136,11 @@ def validate_nested_fields(data, nested_fields):
         for field, expected_type in fields.items():
             field_value= parent_data.get(field)
             assert field_value is not None
-            assert isinstance(field_value, expected_type), f"{field} must be {expected_type.__name__}"            
-                         
+            assert isinstance(field_value, expected_type), f"{field} must be {expected_type.__name__}"
+
+def validate_optional_field_types(data, optional_contract):
+    for field, expected_type in optional_contract.items():
+        if field in data:
+            assert isinstance(data[field], expected_type), (
+                f"{field} must be {expected_type.__name__}"
+            )
