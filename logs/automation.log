@@ -717,3 +717,76 @@ TypeError: not all arguments converted during string formatting
 2026-11-23 13:49:20,735 | INFO | api.user_client | Sending GET request | /users/1000
 2026-11-23 13:49:20,927 | INFO | api.user_client | Request completed | /users/1000 | Duration: 0.19 seconds
 2026-11-23 13:49:20,928 | INFO | api.user_client | Received response | /users/1000 | Status: 404
+2026-11-23 17:53:54,074 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 17:53:56,199 | INFO | api.user_client | Request completed | /users/1 | Duration: 2.12 seconds
+2026-11-23 17:53:56,199 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 17:54:22,186 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 17:54:23,149 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.96 seconds
+2026-11-23 17:54:23,149 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 17:54:38,471 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 17:54:39,435 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.96 seconds
+2026-11-23 17:54:39,435 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 17:55:21,865 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 17:55:22,830 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.96 seconds
+2026-11-23 17:55:22,831 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 17:58:38,671 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 17:58:39,663 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.99 seconds
+2026-11-23 17:58:39,663 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 18:02:39,499 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 18:02:40,853 | INFO | api.user_client | Request completed | /users/1 | Duration: 1.35 seconds
+2026-11-23 18:02:40,854 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 19:22:00,755 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 19:22:02,059 | INFO | api.user_client | Request completed | /users/1 | Duration: 1.30 seconds
+2026-11-23 19:22:02,059 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 19:25:49,821 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 19:25:50,811 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.99 seconds
+2026-11-23 19:25:50,811 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 19:28:16,637 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 19:28:17,909 | INFO | api.user_client | Request completed | /users/1 | Duration: 1.27 seconds
+2026-11-23 19:28:17,909 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 19:29:52,078 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 19:29:53,060 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.98 seconds
+2026-11-23 19:29:53,061 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 19:59:42,354 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 19:59:43,692 | INFO | api.user_client | Request completed | /users/1 | Duration: 1.34 seconds
+2026-11-23 19:59:43,692 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 20:00:37,575 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 20:00:37,901 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.33 seconds
+2026-11-23 20:00:37,901 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 20:00:37,903 | INFO | test_get_user | Validating user response
+2026-11-23 20:00:37,910 | INFO | api.user_client | Sending GET request | /users/999
+2026-11-23 20:00:38,295 | INFO | api.user_client | Request completed | /users/999 | Duration: 0.38 seconds
+2026-11-23 20:00:38,296 | INFO | api.user_client | Received response | /users/999 | Status: 404
+2026-11-23 20:00:40,183 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 20:00:40,768 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.59 seconds
+2026-11-23 20:00:40,769 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 20:00:40,778 | INFO | api.user_client | Sending GET request | /users/2
+2026-11-23 20:00:41,207 | INFO | api.user_client | Request completed | /users/2 | Duration: 0.43 seconds
+2026-11-23 20:00:41,208 | INFO | api.user_client | Received response | /users/2 | Status: 200
+2026-11-23 20:00:41,220 | INFO | api.user_client | Sending GET request | /users/3
+2026-11-23 20:00:41,727 | INFO | api.user_client | Request completed | /users/3 | Duration: 0.51 seconds
+2026-11-23 20:00:41,728 | INFO | api.user_client | Received response | /users/3 | Status: 200
+2026-11-23 20:00:42,076 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 20:00:42,389 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.31 seconds
+2026-11-23 20:00:42,389 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 20:00:42,399 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 20:00:42,777 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.38 seconds
+2026-11-23 20:00:42,778 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 20:00:43,163 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 20:00:43,489 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.33 seconds
+2026-11-23 20:00:43,490 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 20:00:46,397 | INFO | api.user_client | Sending GET request | /users/1
+2026-11-23 20:00:46,847 | INFO | api.user_client | Request completed | /users/1 | Duration: 0.45 seconds
+2026-11-23 20:00:46,848 | INFO | api.user_client | Received response | /users/1 | Status: 200
+2026-11-23 20:00:46,860 | INFO | api.user_client | Sending GET request | /users/2
+2026-11-23 20:00:47,426 | INFO | api.user_client | Request completed | /users/2 | Duration: 0.57 seconds
+2026-11-23 20:00:47,427 | INFO | api.user_client | Received response | /users/2 | Status: 200
+2026-11-23 20:00:47,442 | INFO | api.user_client | Sending GET request | /users/3
+2026-11-23 20:00:47,792 | INFO | api.user_client | Request completed | /users/3 | Duration: 0.35 seconds
+2026-11-23 20:00:47,792 | INFO | api.user_client | Received response | /users/3 | Status: 200
+2026-11-23 20:00:47,800 | INFO | api.user_client | Sending GET request | /users/999
+2026-11-23 20:00:48,127 | INFO | api.user_client | Request completed | /users/999 | Duration: 0.33 seconds
+2026-11-23 20:00:48,128 | INFO | api.user_client | Received response | /users/999 | Status: 404
+2026-11-23 20:00:48,141 | INFO | api.user_client | Sending GET request | /users/1000
+2026-11-23 20:00:48,465 | INFO | api.user_client | Request completed | /users/1000 | Duration: 0.32 seconds
+2026-11-23 20:00:48,466 | INFO | api.user_client | Received response | /users/1000 | Status: 404

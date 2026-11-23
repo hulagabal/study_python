@@ -1,6 +1,6 @@
 import pytest
 
-from utils.api_helper import validate_response, validate_status_code, validate_required_fields, validate_non_empty_fields, validate_field_types, validate_response_data, validate_positive_integer, validate_numeric_range, validate_string_length, validate_product_data
+from utils.api_helper import validate_response, validate_status_code, validate_required_fields, validate_non_empty_fields, validate_field_types, validate_response_data, validate_positive_integer, validate_numeric_range, validate_string_length, validate_product_data, validate_nested_fields
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -330,7 +330,84 @@ def test_invalid_product_details(product):
     with pytest.raises(AssertionError) as exc:
         validate_product_data(product)
     
-    print(exc.value)    
-                          
+    print(exc.value)                                                   
+
+def test_get_user_nested_address_validation(user_client):
+    response = user_client.get_user(1)
     
-                                                                
+    validate_response(response, 200)
+    data = response.json()
+    
+    required_fields = ["id", "name"]
+
+    expected_types = {
+        "id": int,
+        "name": str
+    }
+
+    nested_fields = {
+        "address": {
+            "city": str,
+            "zipcode": str
+        }
+    }
+    
+    validate_response_data(data, required_fields, expected_types, nested_fields=nested_fields)
+
+
+def test_get_user_nested_address_validation_invalid():
+
+    invalid_user = {
+        "id": 1,
+        "name": "Leanne Graham",
+        "address": {
+            "street": "Kulas Light"
+        }
+    }
+
+    nested_fields = {
+        "address": {
+            "city": str,
+            "zipcode": str
+        }
+    }
+
+    with pytest.raises(AssertionError):
+        validate_nested_fields(invalid_user, nested_fields)    
+
+def test_get_user_nested_address_validation_city_invalid():
+    invalid_user = {    
+        "id": 1,
+        "name": "Leanne Graham",
+        "address": {
+            "street": "Kulas Light"
+        }
+    }
+    
+    address = invalid_user.get("address")
+    assert address is not None
+    assert isinstance(address, dict)
+    city = address.get("city")
+    
+    with pytest.raises(AssertionError):
+        assert city is not None
+
+def test_get_user_nested_address_invalid_type():
+    invalid_user = {    
+        "id": 1,
+        "name": "Leanne Graham",
+        "address": {
+            "city": 12345,
+            "zipcode": "92998-3874"
+        }
+    }
+    
+    nested_fields = {    
+        "address": {
+            "city": str,
+            "zipcode": str
+        }
+    }
+    
+    with pytest.raises(AssertionError):
+        validate_nested_fields(invalid_user, nested_fields)    

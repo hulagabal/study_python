@@ -64,13 +64,16 @@ def validate_field_types(data, expected_types):
                 )
 
 
-def validate_response_data(data, fields, types, positive_integer_fields=None):
+def validate_response_data(data, fields, types, positive_integer_fields=None, nested_fields=None):
     validate_required_fields(data, fields)
     validate_non_empty_fields(data, fields)
     validate_field_types(data, types)
     if positive_integer_fields is not None:
         for field in positive_integer_fields:
             validate_positive_integer(data[field], field)
+    
+    if nested_fields is not None:
+        validate_nested_fields(data, nested_fields)        
 
 user = {
     "id": -5,
@@ -119,5 +122,17 @@ def validate_product_data(product):
     validate_positive_integer(product["quantity"], "Quantity")
     validate_numeric_range(product["quantity"], "Quantity", minimum=1,  maximum=100)
     # Validate product SKU
-    validate_string_length(product["sku"], "SKU", minimum=5, maximum=5)        
+    validate_string_length(product["sku"], "SKU", minimum=5, maximum=5)
+
+
+def validate_nested_fields(data, nested_fields):
+    for parent, fields in nested_fields.items():
+        parent_data = data.get(parent) 
+        assert parent_data is not None, f"{parent} is missing"
+        assert isinstance(parent_data, dict), f"{parent} must be a dictionary"
+        
+        for field, expected_type in fields.items():
+            field_value= parent_data.get(field)
+            assert field_value is not None
+            assert isinstance(field_value, expected_type), f"{field} must be {expected_type.__name__}"            
                          
