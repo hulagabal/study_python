@@ -55,13 +55,16 @@ def validate_non_empty_fields(data, required_fields):
 
 
 def validate_field_types(data, expected_types):
-    
     for field, expected_type in expected_types.items():
-        if not isinstance(data[field], expected_type):    
-            raise AssertionError(
-                f"Expected {expected_type.__name__}, "
-                f"but received {type(data[field]).__name__}"
-                )
+        value = data[field]
+        if expected_type is int:
+            assert type(value) is int, f"{field} must be Integer"
+        else:     
+            if not isinstance(value, expected_type):    
+                raise AssertionError(
+                    f"Expected {expected_type.__name__}, "
+                    f"but received {type(data[field]).__name__}"
+                    )
 
 
 def validate_response_data(data, fields, types, positive_integer_fields=None, nested_fields=None, optional_fields=None):
@@ -144,3 +147,20 @@ def validate_optional_field_types(data, optional_contract):
             assert isinstance(data[field], expected_type), (
                 f"{field} must be {expected_type.__name__}"
             )
+
+
+def validate_optional_non_empty_fields(data, fields):
+    for field in fields:
+        if field in data:
+            field_value = data[field]
+            if not isinstance(field_value, str):
+                msg = (
+                    f"Validation failed for '{field}': expected a non-empty string, "
+                    f"got {type(field_value).__name__} ({field_value!r})"
+                )
+                raise AssertionError(msg)
+            
+            if not field_value.strip():
+                msg = f"Validation failed for '{field}': string cannot be empty or whitespace-only"
+                raise AssertionError(msg)
+                
