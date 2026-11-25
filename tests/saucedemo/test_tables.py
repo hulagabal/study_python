@@ -4,6 +4,9 @@ from playwright.sync_api import Page
 def test_common_testing(page: Page):
     
     page.goto("https://testautomationpractice.blogspot.com/")
+    print("CURRENT URL:", page.url)
+    print("PAGE TITLE:", page.title())
+    print("PAGE CONTENT:", page.locator("body").inner_text()[:1500])
     
     
     page.get_by_placeholder("Enter Name").fill("Muttu")

@@ -2,6 +2,9 @@ from playwright.sync_api import Page,expect
 
 def test_alerts_popups(page: Page):
     page.goto("https://testautomationpractice.blogspot.com/p/playwrightpractice.html")
+    print("CURRENT URL:", page.url)
+    print("PAGE TITLE:", page.title())
+    print("PAGE CONTENT:", page.locator("body").inner_text()[:1500])
     
     def handle_dialog(dialog):
         dialog_type = dialog.type
