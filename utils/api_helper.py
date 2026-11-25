@@ -67,10 +67,10 @@ def validate_field_types(data, expected_types):
                     )
 
 
-def validate_response_data(data, fields, types, positive_integer_fields=None, nested_fields=None, optional_fields=None):
-    validate_required_fields(data, fields)
-    validate_non_empty_fields(data, fields)
-    validate_field_types(data, types)
+def validate_response_data(data, required_fields, expected_types, positive_integer_fields=None, nested_fields=None, optional_fields=None):
+    validate_required_fields(data, required_fields)
+    validate_non_empty_fields(data, required_fields)
+    validate_field_types(data, expected_types)
     if positive_integer_fields is not None:
         for field in positive_integer_fields:
             validate_positive_integer(data[field], field)
@@ -163,4 +163,3 @@ def validate_optional_non_empty_fields(data, fields):
             if not field_value.strip():
                 msg = f"Validation failed for '{field}': string cannot be empty or whitespace-only"
                 raise AssertionError(msg)
-                

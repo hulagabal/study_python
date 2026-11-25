@@ -55,32 +55,27 @@ def test_all_users(user_client):
 def test_retrieve_users_params(user_client, user_id):
     params = {"id": user_id}
     response = user_client.retrieve_users(params)
-    
     validate_status_code(response, 200 , "GET /users")
     
     data =  response.json()
-    
     assert len(data) > 0
     assert data[0]["id"] == params["id"]
 
 def test_retrieve_users_header(user_client):
-    headers = {
-    "X-Test-Client": "Playwright",
-    "Accept": "application/json"
-    }
+    headers = {        
+        "X-Test-Client": "Playwright",
+        "Accept": "application/json"
+        }
     
     response = user_client.get_users_with_headers(headers)
-    
     validate_status_code(response, 200, "GET /users")
     
     data = response.json()
-    
     assert data["headers"]["X-Test-Client"] == "Playwright"
 
 
 def test_verify_response_fields():
     data = {
-        
         "id": 1,
         "name": "Leanne Graham",
         "email": "Sincere@april.biz"
@@ -105,7 +100,6 @@ def test_malformed_json():
     
 def test_required_fields():
     data = {
-        
         "id": 1,
         "name": "Leanne Graham"
         }

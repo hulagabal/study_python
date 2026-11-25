@@ -2,6 +2,8 @@ from pathlib import Path
 from datetime import datetime
 
 import pytest
+import pytest_html
+import base64
 
 from playwright.sync_api import Playwright, Page, Browser, expect
 
@@ -30,19 +32,8 @@ def logged_in_user(page, request):
     )
     login_page = LoginPage(page)
     login_page.login(username, password)
+    
     yield page
-    
-    report = getattr(request.node, "rep_call", None)
-    
-    if report and report.failed:
-        screenshot_dir = Path("screenshots")
-        screenshot_dir.mkdir(exist_ok=True) 
-        test_name = request.node.name
-        time_stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        file_name = f"{test_name}_{time_stamp}.png"
-        file_path = screenshot_dir / file_name
-        
-        page.screenshot(path=file_path)
         
     print("Teardown: Test completed.")
 
@@ -59,11 +50,31 @@ def get_captured_messages(page: Page):
     finally:
         page.remove_listener('dialog', dialog_callback)
 
-@pytest.hookimpl(hookwrapper=True)
+@pytest.hookimpl(hookwrapper=True)            
 def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
     setattr(item, f"rep_{report.when}", report )
+    
+    if report.when == "call" and report.failed:
+        page = item.funcargs.get("page")
+        
+        if page:
+            screenshot_dir = Path("screenshots")
+            screenshot_dir.mkdir(exist_ok=True)
+            
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            file_name = screenshot_dir / f"{item.name}_{timestamp}.png"
+            page.screenshot(path=file_name)
+            
+            image_data = base64.b64encode(file_name.read_bytes()).decode("utf-8")
+            
+            extras = getattr(report, "extras", [])
+            extras.append(
+                pytest_html.extras.image(image_data, mime_type="image/png")
+                )
+            report.extras = extras
+        
     
 @pytest.fixture(scope="function")
 def checkout_info_page(page:Page) -> CheckoutInformationPage:
