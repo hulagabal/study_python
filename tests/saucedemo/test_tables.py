@@ -1,5 +1,5 @@
 from playwright.sync_api import Page
-
+from pathlib import Path
 
 def test_common_testing(page: Page):
     
@@ -25,8 +25,8 @@ def test_common_testing(page: Page):
     page.locator("#colors").select_option(value=["Red", "Blue"])
     
     page.locator("#datepicker").fill("10/31/2026")
-    
-    page.locator("#singleFileInput").set_input_files("C:/Users/mutturaj.h/Downloads/Designation Change Letter-10305.pdf")
+    file_path = (Path(__file__).resolve().parents[2] / "test_data" / "Designation Change Letter-10305.pdf")
+    page.locator("#singleFileInput").set_input_files(str(file_path))
     page.get_by_role("button", name="Upload Single File").click()
     print(page.locator("#singleFileStatus").text_content())
     
