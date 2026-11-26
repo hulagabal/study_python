@@ -15,7 +15,7 @@ class CheckoutOverviewPage:
     
     def verify_product_name(self, expected_name):
         item_name= self.filtered_item(expected_name).locator(".inventory_item_name")
-        expect(item_name).to_contain_text(expected_name)
+        expect(item_name).to_have_text(expected_name)
     
     def verify_product_price(self, expected_name, expected_price):
         item_price = self.filtered_item(expected_name).locator(".inventory_item_price")        

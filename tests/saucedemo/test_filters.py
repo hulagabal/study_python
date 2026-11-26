@@ -5,6 +5,7 @@ from pages.inventory_page import InventoryPage
 
 def test_dynamic_product_sorting(page:Page):
     login_page =LoginPage(page)
+    login_page.open()
     login_page.login("standard_user", "secret_sauce")
     
     inventory_page = InventoryPage(page)
@@ -16,6 +17,7 @@ def test_dynamic_product_sorting(page:Page):
     
 def test_dropdown_validation(page: Page):
     login_page =LoginPage(page)
+    login_page.open()
     login_page.login("standard_user", "secret_sauce")
     
     inventory_page = InventoryPage(page)

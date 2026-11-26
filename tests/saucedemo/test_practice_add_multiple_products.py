@@ -6,6 +6,7 @@ from pages.login_page import LoginPage
 
 def test_add_remove_multiple_products(page:Page):
     login_page =LoginPage(page)
+    login_page.open()
     login_page.login("standard_user", "secret_sauce")
     
     inventory_page =InventoryPage(page)
@@ -27,4 +28,4 @@ def test_add_remove_multiple_products(page:Page):
     cart_page.verify_cart_count("1")
     
     cart_page.verify_cart_product("Sauce Labs Backpack")
-    cart_page.very_product_not_in_cart("Sauce Labs Bike Light")    
+    cart_page.verify_product_not_in_cart("Sauce Labs Bike Light")

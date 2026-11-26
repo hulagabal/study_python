@@ -22,14 +22,14 @@ def validate_content_type(response, expected_type):
 
     if expected_type not in content_type:
         logger.error(
-            "Content-Type validation failed | Expected: 'application/json' | Actual: '%s' | Headers: %s",
-            content_type,
+            "Content-Type validation failed | Expected: '%s' | Actual: '%s' | Headers: %s",
+            expected_type,
             content_type
         )
         
     assert expected_type in content_type, (
             f"Expected content type {expected_type}, "
-            f"but received {response.headers['content-type']}"
+            f"but received {content_type}"
         )
 
 def validate_response(response, expected_status, endpoint="Unknown endpoint"):
@@ -80,12 +80,7 @@ def validate_response_data(data, required_fields, expected_types, positive_integ
     if optional_fields is not None:
         validate_optional_field_types(data, optional_fields)            
 
-user = {
-    "id": -5,
-    "name": "Leanne Graham",
-    "username": "Bret",
-    "email": "leanne@example.com"
-}
+
 def validate_positive_integer(value, field_name):
     
     if type(value) is not int:
@@ -137,16 +132,21 @@ def validate_nested_fields(data, nested_fields):
         assert isinstance(parent_data, dict), f"{parent} must be a dictionary"
         
         for field, expected_type in fields.items():
-            field_value= parent_data.get(field)
-            assert field_value is not None
+            assert field in parent_data, f"{field} is missing"
+            field_value = parent_data[field]
+            assert field_value is not None, f"{field} cannot be None"
             assert isinstance(field_value, expected_type), f"{field} must be {expected_type.__name__}"
 
 def validate_optional_field_types(data, optional_contract):
     for field, expected_type in optional_contract.items():
         if field in data:
-            assert isinstance(data[field], expected_type), (
-                f"{field} must be {expected_type.__name__}"
-            )
+            value = data[field]
+            if expected_type is int:
+                assert type(value) is int, f"{field} must be Integer"
+            else:
+                assert isinstance(value, expected_type), (
+                    f"{field} must be {expected_type.__name__}"
+                )
 
 
 def validate_optional_non_empty_fields(data, fields):

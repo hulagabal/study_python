@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-base_url = os.getenv("API_BASE_URL" or "https://jsonplaceholder.typicode.com")
+base_url = os.getenv("API_BASE_URL", "https://jsonplaceholder.typicode.com")
 
 
 @pytest.fixture(scope="function")
@@ -31,11 +31,11 @@ def logged_in_user(page, request):
         ("standard_user", "secret_sauce")
     )
     login_page = LoginPage(page)
+    login_page.open()
     login_page.login(username, password)
     
     yield page
-        
-    print("Teardown: Test completed.")
+
 
 @pytest.fixture(scope="function")
 def get_captured_messages(page: Page):
@@ -57,7 +57,7 @@ def pytest_runtest_makereport(item, call):
     setattr(item, f"rep_{report.when}", report )
     
     if report.when == "call" and report.failed:
-        page = item.funcargs.get("page")
+        page = item.funcargs.get("page") or item.funcargs.get("authenticated_page")
         
         if page:
             screenshot_dir = Path("screenshots")
@@ -79,6 +79,7 @@ def pytest_runtest_makereport(item, call):
 @pytest.fixture(scope="function")
 def checkout_info_page(page:Page) -> CheckoutInformationPage:
     login_page = LoginPage(page)
+    login_page.open()
     login_page.login("standard_user", "secret_sauce")
         
     inventory_page = InventoryPage(page)

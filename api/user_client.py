@@ -1,7 +1,6 @@
-from playwright.sync_api import APIRequestContext
-
+from typing import Any
+from playwright.sync_api import APIRequestContext, APIResponse
 from utils.logger import get_logger
-
 import time
 
 logger = get_logger(__name__)
@@ -10,56 +9,63 @@ class UserClient:
 
     def __init__(self, api_request: APIRequestContext):
         self.api_request = api_request
-
     
-    def get_user(self, user_id: int):
-        endpoint = f"/users/{user_id}"
-        
-        logger.info("Sending GET request | %s", endpoint)
-        
+    def _send_request(self, method: str, endpoint: str, **kwargs: Any) -> APIResponse:
+        normalized_method = method.strip().lower()
+        request_fn = getattr(self.api_request, normalized_method, None)
+
+        if not callable(request_fn):
+            raise ValueError(f"Unsupported HTTP method: {method}")
+
+        logger.info("Sending %s request | %s", normalized_method.upper(), endpoint)
+
         try:
-        # Your task: send a GET request for this user
             start_time = time.perf_counter()
-            response = self.api_request.get(f"users/{user_id}")
-            
-            end_time = time.perf_counter()
-            duration = end_time - start_time
-            logger.info("Request completed | %s | Duration: %.2f seconds", endpoint, duration)
+            response = request_fn(endpoint, **kwargs)
+
+            duration = time.perf_counter() - start_time
+            logger.info(
+                "Request completed | %s | Duration: %.2f seconds",
+                endpoint,
+                duration,
+            )
         except Exception:
-            logger.exception("API request failed | %s", endpoint)
-            raise    
-        
-        logger.info( 
+            duration = time.perf_counter() - start_time
+            logger.exception(
+               "API request failed | %s | Duration: %.2f seconds",
+                endpoint,
+                duration,
+            )
+            raise
+
+        logger.info(
             "Received response | %s | Status: %s",
             endpoint,
-            response.status
-    )
+            response.status,
+        )
         return response
+
+
+    def get_user(self, user_id: int):
+        return self._send_request("GET", f"/users/{user_id}")
     
     def get_all_users(self):
-        response =self.api_request.get("users")
-        return response
+        return self._send_request("GET", "/users")
     
     def create_user(self, payload: dict):
-        response = self.api_request.post("/users", data=payload)
-        return response
+        return self._send_request("POST", "/users", data=payload)
     
     def replace_user(self, user_id:int, payload: dict):
-        response = self.api_request.put(f"/users/{user_id}", data=payload)
-        return response
+        return self._send_request("PUT", f"/users/{user_id}", data=payload)
     
     def update_user(self, user_id:int, payload: dict):
-        response = self.api_request.patch(f"/users/{user_id}", data=payload)
-        return response
+        return self._send_request("PATCH", f"/users/{user_id}", data=payload)
     
     def delete_user(self, user_id: int):
-        response = self.api_request.delete(f"/users/{user_id}")
-        return response
+        return self._send_request("DELETE", f"/users/{user_id}")
     
     def retrieve_users(self, params: dict):
-        response = self.api_request.get("/users", params=params)
-        return response
+        return self._send_request("GET", "/users", params=params)
     
     def get_users_with_headers(self, headers: dict):
-        response = self.api_request.get("https://httpbin.org/headers",headers=headers)
-        return response
+        return self._send_request("GET", "https://httpbin.org/headers", headers=headers)

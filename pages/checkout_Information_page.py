@@ -13,7 +13,7 @@ class CheckoutInformationPage:
         self.error = page.locator('[data-test="error"]')
         
     
-    def verify_first_name_rquired_error(self):
+    def verify_first_name_required_error(self):
         self.continue_button.click()
         expect(self.error).to_have_text("Error: First Name is required")
     

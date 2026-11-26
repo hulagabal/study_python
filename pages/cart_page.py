@@ -25,15 +25,17 @@ class CartPage:
     def verify_cart_is_empty(self):
         expect(self.cart_item_count).to_have_count(0)
     
+    def get_cart_item(self, product_name:str):
+        return self.page.locator(".cart_item").filter(has_text=product_name)
     def verify_cart_product(self, product_name:str):
-        cart_item =self.page.locator(".cart_item").filter(has_text=product_name)
-        self.cart_item_name = cart_item.locator(".inventory_item_name")
-        expect(self.cart_item_name).to_be_visible()
+        cart_item = self.get_cart_item(product_name)
+        cart_item_name = cart_item.locator(".inventory_item_name")
+        expect(cart_item_name).to_be_visible()
     
     def remove_product_from_cart(self, product_name):
-        cart_item =self.page.locator(".cart_item").filter(has_text=product_name)
-        self.remove_button = cart_item.get_by_role("button", name="Remove")
-        self.remove_button.click()
+        cart_item = self.get_cart_item(product_name)
+        remove_button = cart_item.get_by_role("button", name="Remove")
+        remove_button.click()
         
     def verify_cart_count(self, count: int):
         expect(self.shopping_cart_link).to_have_text(count)
@@ -41,10 +43,10 @@ class CartPage:
     def click_shopping_cart(self):
         self.shopping_cart_link.click()
         
-    def very_product_not_in_cart(self, product_name):
-        cart_item =self.page.locator(".cart_item").filter(has_text=product_name)
-        self.cart_item_name = cart_item.locator(".inventory_item_name")
-        expect(self.cart_item_name).to_be_hidden()
+    def verify_product_not_in_cart(self, product_name):
+        cart_item =self.get_cart_item(product_name)
+        cart_item_name = cart_item.locator(".inventory_item_name")
+        expect(cart_item_name).to_be_hidden()
     
     def click_checkout(self):
         self.checkout_button.click()    

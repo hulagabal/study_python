@@ -17,6 +17,7 @@ from pages.login_page import LoginPage
 def test_logins(page: Page, get_captured_messages, username: str, password: str, expected_result: str):
     
     login_page = LoginPage(page)
+    login_page.open()
     login_page.login(username, password)
     
     if expected_result == "success":

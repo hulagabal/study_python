@@ -1,6 +1,6 @@
 
 def test_first_name_required(checkout_info_page):
-    checkout_info_page.verify_first_name_rquired_error()
+    checkout_info_page.verify_first_name_required_error()
 
 def test_last_name_required(checkout_info_page):
     checkout_info_page.verify_last_name_required_error()

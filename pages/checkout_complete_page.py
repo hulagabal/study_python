@@ -11,5 +11,4 @@ class CheckoutCompletePage:
         expect(self.page).to_have_url("https://www.saucedemo.com/checkout-complete.html")
             
     def click_back_home(self):
-        self.back_home_button.click()    
-    
+        self.back_home_button.click()

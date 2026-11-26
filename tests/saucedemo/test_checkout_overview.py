@@ -11,6 +11,7 @@ from playwright.sync_api import Page
 def test_checkout_overview(page:Page):
             
     login_page = LoginPage(page)
+    login_page.open()
     login_page.login("standard_user", "secret_sauce")
             
     inventory_page = InventoryPage(page)

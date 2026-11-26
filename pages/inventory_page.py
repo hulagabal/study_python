@@ -27,7 +27,6 @@ class InventoryPage:
         self.shopping_cart_link.click()
         expect(self.page).to_have_url("https://www.saucedemo.com/cart.html")
     
-    
     def add_products_to_cart(self, product_name: str):
         product = self.products.filter(has_text=product_name)
         product_add_to_cart = product.get_by_role("button", name="Add to cart")
@@ -39,41 +38,33 @@ class InventoryPage:
         product_remove_from_cart = product.get_by_role("button", name="Remove")
         product_remove_from_cart.click()
     
-    def verify_filter_az(self):
-        
-        original_products_names = self.product_names.all_inner_texts()
-        expected_product_names = sorted(original_products_names)
-        
-        self.sort_dropdown.select_option("az")
-        expect(self.product_names).to_have_text(expected_product_names)
+    def _verify_sorting(self, locator, option, reverse=False):
+        original_values = locator.all_inner_texts()
+        expected_values = sorted(original_values, reverse=reverse)
+
+        self.sort_dropdown.select_option(option)
+        expect(locator).to_have_text(expected_values)
     
+    def _verify_price_sorting(self, price_locator, option, reverse=False):
+        
+        original_price_locator = price_locator.all_inner_texts()
+        decimal_prices = self.convert_price(original_price_locator)
+        expected_prices = sorted(decimal_prices,reverse=reverse)
+        formatted_prices = [f"${expected_price:.2f}" for expected_price in expected_prices]
+        
+        self.sort_dropdown.select_option(option)
+        expect(price_locator).to_have_text(formatted_prices)
+    
+    def verify_filter_az(self):
+        self._verify_sorting(self.product_names, "az")
+        
     def verify_filter_za(self):
-        
-        original_product_names = self.product_names.all_inner_texts()
-        expected_product_name = sorted(original_product_names, reverse=True) 
-        
-        self.sort_dropdown.select_option("za")
-        expect(self.product_names).to_have_text(expected_product_name)
+        self._verify_sorting(self.product_names, "za", reverse=True)
         
     def verify_price_filter_low_to_high(self):
-        
-        original_price_locator = self.product_prices.all_inner_texts()
-        decimal_prices = self.convert_price(original_price_locator)
-        expected_prices = sorted(decimal_prices)
-        formatted_prices = [f"${expected_price:.2f}" for expected_price in expected_prices]
-        
-        self.sort_dropdown.select_option("lohi")
-        expect(self.product_prices).to_have_text(formatted_prices)
-    
+        self._verify_price_sorting(self.product_prices, "lohi",reverse=False)
     def verify_price_filter_high_to_low(self):
-        
-        original_price_locator = self.product_prices.all_inner_texts()
-        decimal_prices = self.convert_price(original_price_locator)
-        expected_prices = sorted(decimal_prices, reverse=True)
-        formatted_prices = [f"${expected_price:.2f}" for expected_price in expected_prices]
-        
-        self.sort_dropdown.select_option("hilo")
-        expect(self.product_prices).to_have_text(formatted_prices)
+        self._verify_price_sorting(self.product_prices, "hilo",reverse=True)
         
     def convert_price(self, product_prices: list[str]) -> list[Decimal]:
         prices =[]
@@ -83,7 +74,6 @@ class InventoryPage:
         return prices
     
     def verify_default_sorting_option(self):
-        
         expect(self.sort_dropdown).to_have_value("az")
     
     def verify_all_dropdown_option(self):
