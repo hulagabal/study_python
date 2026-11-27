@@ -1,0 +1,18 @@
+BASE_USER_DATA: dict[str, str] = {
+    "name": "aarav",
+    "password": "Password@123",
+    "title": "Mr",
+    "birth_date": "15",
+    "birth_month": "6",
+    "birth_year": "1995",
+    "firstname": "Aarav",
+    "lastname": "Sharma",
+    "company": "Acme Tech",
+    "address1": "123 MG Road",
+    "address2": "Suite 400",
+    "country": "India",
+    "zipcode": "560001",
+    "state": "Karnataka",
+    "city": "Bengaluru",
+    "mobile_number": "+919876543210",
+}

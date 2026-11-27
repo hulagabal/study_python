@@ -140,4 +140,43 @@ def api_request(playwright: Playwright):
 @pytest.fixture
 def user_client(api_request):
     return UserClient(api_request)
-                    
+
+@pytest.fixture(scope="function")
+def automation_exercise_api_request(playwright: Playwright):
+    
+    request = playwright.request.new_context(
+        base_url="https://automationexercise.com"
+    )
+    try:
+        yield request
+    finally:    
+        request.dispose()
+
+@pytest.fixture
+def automation_exercise_user_client(automation_exercise_api_request):
+    
+    return UserClient(automation_exercise_api_request)
+
+from utils.data_generator import get_account_data
+@pytest.fixture
+def automation_exercise_account(automation_exercise_user_client):
+    account_data = get_account_data()
+    create_response = automation_exercise_user_client.create_account(account_data)
+    
+    assert create_response.status == 200
+    create_body = create_response.json()
+    assert create_body["responseCode"] == 201
+    assert create_body["message"] == "User created!"
+    
+    yield account_data
+    
+    delete_payload={
+        "email": account_data["email"],
+        "password": account_data["password"]
+    }
+    
+    delete_response = automation_exercise_user_client.delete_account(delete_payload)
+    assert delete_response.status == 200
+    delete_body = delete_response.json()
+    assert delete_body["responseCode"] == 200
+    assert delete_body["message"] == "Account deleted!"
